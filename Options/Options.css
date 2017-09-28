@@ -1,0 +1,41 @@
+﻿/* 
+ *Copyright (C) 2017 Peter Varney - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the MIT license, 
+ *
+ * You should have received a copy of the MIT license with
+ * this file. If not, visit : https://github.com/fatalwall/SCCD-Change-Helper
+ */ 
+
+ div.body {
+    margin: auto;
+    //width: 684px;
+    //border: 3px solid #73AD21;
+    padding: 10px;
+ }
+ 
+/* Fields  */
+input:required:invalid, input:focus:invalid {
+    background-image: url(invalid.png);
+    background-position: right top;
+    background-repeat: no-repeat;
+  }
+input:required:valid, input:focus:valid {
+    background-image: url(valid.png);
+    background-position: right top;
+    background-repeat: no-repeat;
+}
+input#epm_url {
+	width: 100%;
+}
+label {
+    margin-top: 3px;
+    display:inline-block;
+    padding:3px;
+	font-weight: bold;
+	vertical-align: middle;
+}
+label.optional-label, label.reminderEnabled-label {
+	font-weight: normal;
+	vertical-align: top;
+}

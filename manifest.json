@@ -1,0 +1,39 @@
+{
+  "manifest_version": 2,
+  
+  "name": "EPM - Three 2 One",
+  "version": "0.0.1",
+  "description": "Allows entry of an IN that will populate other fields",
+  
+  "options_ui": {
+    "page": "Options/options.html",
+    "chrome_style": true
+  },
+  "web_accessible_resources": [
+		"Options/valid.png", "Options/invalid.png"
+  ],
+  "icons": {
+	"16":"theme/icon16.png",
+	"48":"theme/icon48.png",
+	"128":"theme/icon128.png"
+  },
+  "permissions": [
+		"storage",
+		"tabs",
+		"*://*/*/_layouts/PWA/Statusing/AddTask.aspx*"
+  ],
+  "browser_action": {
+		"default_icon": "theme/icon16.png"
+  },
+  "background": {
+    "persistent": false,
+    "scripts": ["GoToEPM.js"]
+  },
+  "content_scripts": [
+	{
+		"css": ["theme/epm.css"],
+		"matches": ["*://*/*/_layouts/PWA/Statusing/AddTask.aspx*"],
+		"js": ["Incident_Search_Box.js","EPM_OnLoad.js"]
+	}
+  ]
+}
