@@ -6,9 +6,8 @@
  * You should have received a copy of the MIT license with
  * this file. If not, visit : https://github.com/fatalwall/EPM-Three-2-One
  */ 
-var self;
 
-function SetProject (ticket) {
+function ISB_SetProject (ticket) {
 	ticket= ticket.toUpperCase().replace("IN","");
 	console.log('Function Set Project');
 	var project = document.getElementById("ctl00_ctl00_PlaceHolderMain_PWA_PlaceHolderMain_idFormSectionTaskLocation_ctl01_ProjectDropdown");
@@ -17,13 +16,14 @@ function SetProject (ticket) {
 		var r = new RegExp('^[I,i]ncidents?(_|-)[0-9]{6}(_| - |-)[0-9]{6}$');
 		projectText = project.options[i].text;
 		if(r.test(projectText)){
-			projectText = projectText.replace("Incident_","");
 			projectText = projectText.replace(" - ","_");
 			projectText = projectText.replace("-","_");
+			projectText = projectText.replace("-","_");
 			projectText = projectText.trim();
+			//console.log(projectText);
 			var arr = projectText.split("_");
-			//console.log(parseInt(arr[1]) + "<=" + parseInt(ticket) + " && " + parseInt(arr[2]) + ">=" + parseInt(ticket));
-			if (parseInt(arr[1]) <= parseInt(ticket) && parseInt(arr[2]) >= parseInt(ticket)){
+			if ((parseInt(arr[1]) <= parseInt(ticket)) && (parseInt(arr[2]) >= parseInt(ticket))){
+				console.log(parseInt(arr[1]) + "<=" + parseInt(ticket) + " && " + parseInt(arr[2]) + ">=" + parseInt(ticket) + " = TRUE");
 				console.log('RegExp Match:' + i + " Text:" + project.options[i].text);
 				console.log('Project Ticket Match');
 				if (project.value != project.options[i].value){
@@ -31,8 +31,10 @@ function SetProject (ticket) {
 					project.dispatchEvent(new Event('change'));
 				} else {
 					//Project is set correctly so i can now set task
-					SetTask(ticket);
+					ISB_SetTask(ticket);
 				}
+			}else{
+				console.log(parseInt(arr[1]) + "<=" + parseInt(ticket) + " && " + parseInt(arr[2]) + ">=" + parseInt(ticket) + " = FALSE");
 			}
 		}else{
 			//console.log('RegExp Fail:' + i + " Text:" + project.options[i].text);
@@ -41,7 +43,7 @@ function SetProject (ticket) {
 	console.log('End Set Project');
 };
 
-function SetTask (ticket) {
+function ISB_SetTask (ticket) {
 	ticket= ticket.replace("IN","");
 	console.log('Function Set Task');
 	var task = document.getElementById("ctl00_ctl00_PlaceHolderMain_PWA_PlaceHolderMain_idFormSectionName_ctl00_TaskDropdown");
@@ -74,23 +76,28 @@ function SetTask (ticket) {
 var Incident_Search_Box = function() {
 	'use strict';
 	var IncidentSearch;
-	self = this;
+
 	return {
 		
 		/**
          * Reload value after page changes due to dropdown change
          */
 		'Load': function () {
-			chrome.storage.sync.get(
-				['IN'], 
-				function(items) {
-					if (typeof items.IN != 'undefined' ) {
-						console.log('Loading IN:' + items.IN);
-						IncidentSearch.value = items.IN;
-						IncidentSearch.dispatchEvent(new Event('change'));
-					};
-				}
-			);		
+			if (typeof getVariableValue("Incident") === 'undefined'){
+				chrome.storage.sync.get(
+					['IN'], 
+					function(items) {
+						if (typeof items.IN != 'undefined' ) {
+							console.log('Loading IN:' + items.IN);
+							IncidentSearch.value = items.IN;
+							IncidentSearch.dispatchEvent(new Event('change'));
+						};
+					}
+				);
+			} else {
+				IncidentSearch.value = getVariableValue("Incident");
+				IncidentSearch.dispatchEvent(new Event('change'));
+			};
 		},
 		
 		/**
@@ -116,7 +123,7 @@ var Incident_Search_Box = function() {
 			var r = new RegExp('((^[I,i][N,n][5-9]{1}[0-9]{5}$)|(^[5-9]{1}[0-9]{5}$))');
 			if(r.test(IncidentSearch.value)){
 				IncidentSearch.style.backgroundImage= "url(" + chrome.extension.getURL("Options/valid.png")+")";
-				SetProject(IncidentSearch.value);
+				ISB_SetProject(IncidentSearch.value);
 				return true;
 			}else{
 				IncidentSearch.style.backgroundImage= "url(" + chrome.extension.getURL("Options/invalid.png")+")";

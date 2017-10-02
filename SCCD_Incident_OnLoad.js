@@ -7,7 +7,5 @@
  * this file. If not, visit : https://github.com/fatalwall/EPM-Three-2-One
  */ 
 
- var isb = Incident_Search_Box();
- isb.Add();
-
- 
+var inToEPM = AddToEPM();
+inToEPM.Add();

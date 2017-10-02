@@ -2,7 +2,7 @@
   "manifest_version": 2,
   
   "name": "EPM - Three 2 One",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Allows entry of an IN that will populate other fields",
   
   "options_ui": {
@@ -10,7 +10,7 @@
     "chrome_style": true
   },
   "web_accessible_resources": [
-		"Options/valid.png", "Options/invalid.png"
+		"Options/valid.png", "Options/invalid.png", "theme/icon16.png"
   ],
   "icons": {
 	"16":"theme/icon16.png",
@@ -20,7 +20,8 @@
   "permissions": [
 		"storage",
 		"tabs",
-		"*://*/*/_layouts/PWA/Statusing/AddTask.aspx*"
+		"*://*/*/_layouts/PWA/Statusing/AddTask.aspx*",
+		"*://*/maximo/ui/?event=loadapp&value=incident*"
   ],
   "browser_action": {
 		"default_icon": "theme/icon16.png"
@@ -33,7 +34,11 @@
 	{
 		"css": ["theme/epm.css"],
 		"matches": ["*://*/*/_layouts/PWA/Statusing/AddTask.aspx*"],
-		"js": ["Incident_Search_Box.js","EPM_OnLoad.js"]
+		"js": ["SharedFunctions.js","Incident_Search_Box.js","EPM_OnLoad.js"]
+	},
+	{
+		"matches": ["*://*/maximo/ui/?event=loadapp&value=incident*"],
+		"js": ["SharedFunctions.js","SCCD_EPM_Button.js","SCCD_Incident_OnLoad.js"]
 	}
   ]
 }
